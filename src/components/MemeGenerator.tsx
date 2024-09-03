@@ -90,7 +90,7 @@ const MemeGenerator: React.FC = () => {
           Export Meme
         </Button>
       )}
-      {!image && <p>Choose image to being making meme...</p>}
+      {!image && <p>Choose image to begin making meme...</p>}
     </div>
   );
 };

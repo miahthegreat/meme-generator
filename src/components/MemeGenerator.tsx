@@ -1,13 +1,25 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useState, ChangeEvent, useRef, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "./ui/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 const MemeGenerator: React.FC = () => {
   const [topText, setTopText] = useState<string>("");
   const [image, setImage] = useState<string | null>(null);
+  const [fileName, setFileName] = useState<string>("meme");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
@@ -30,7 +42,7 @@ const MemeGenerator: React.FC = () => {
           .then((dataUrl) => {
             const link = document.createElement("a");
             link.href = dataUrl;
-            link.download = "meme.png";
+            link.download = `${fileName}.png`;
             link.click();
           })
           .catch((err) => {
@@ -73,7 +85,7 @@ const MemeGenerator: React.FC = () => {
               value={topText}
               onChange={(e) => setTopText(e.target.value)}
               rows={1}
-              className="w-full flex items-center bg-transparent text-black font-mono font-light text-xl text-left resize-none overflow-hidden"
+              className="w-full flex items-center bg-transparent text-black font-light text-base text-left resize-none overflow-hidden"
             />
           </div>
           <div className="relative">
@@ -86,9 +98,53 @@ const MemeGenerator: React.FC = () => {
         </div>
       )}
       {image && (
-        <Button variant="outline" onClick={exportMeme}>
-          Export Meme
-        </Button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="outline">Export Meme</Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Save Meme</DialogTitle>
+              <DialogDescription>
+                Choose a file name and the click on save.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="flex items-center space-x-2">
+              <div className="grid flex-1 gap-2">
+                <Label htmlFor="filename" className="sr-only">
+                  Link
+                </Label>
+                <Input
+                  id="filename"
+                  defaultValue={fileName}
+                  type="text"
+                  onChange={(e) => setFileName(e.target.value)}
+                />
+              </div>
+            </div>
+            <DialogFooter className="sm:justify-start">
+              <DialogClose asChild>
+                <div className="mx-auto w-full grid grid-cols-2 gap-2 items-center">
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    className="w-full"
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="default"
+                    className="w-full"
+                    onClick={exportMeme}
+                  >
+                    Save
+                  </Button>
+                </div>
+              </DialogClose>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       )}
       {!image && <p>Choose image to begin making meme...</p>}
     </div>

@@ -64,7 +64,7 @@ const MemeGenerator: React.FC = () => {
   }, [topText]);
 
   return (
-    <div className="grid w-full max-w-md items-center gap-1.5">
+    <div className="grid w-full max-w-lg items-center gap-1.5">
       <Label htmlFor="image">Image</Label>
       <Input
         id="image"
@@ -76,7 +76,7 @@ const MemeGenerator: React.FC = () => {
       {image && (
         <div
           id="meme"
-          className="w-full max-w-md ring ring-slate-400/10 rounded-lg"
+          className="w-full max-w-lg ring ring-slate-400/10 rounded-lg"
         >
           <div className="bg-white p-2 rounded-t-lg text-center">
             <textarea
